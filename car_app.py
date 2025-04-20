@@ -10,27 +10,31 @@ car_data = pd.read_csv('car_data.csv')
 
 st.header('🚗 Car Price Prediction ML Model')
 
-# Select brand
-brand = st.selectbox('Select Car Brand', sorted(car_data['manufacturer'].unique()))
+c1, c2 = st.columns(2)
+with c1:
+    # Select brand
+    brand = st.selectbox('Select Car Brand', sorted(car_data['manufacturer'].unique()))
+    # Dynamically filter model options based on selected brand
+    filtered_models = car_data[car_data['manufacturer'] == brand]['model'].unique()
+    car_model = st.selectbox('Select Car Model', sorted(filtered_models))
+    filtered_body = car_data[car_data['manufacturer'] == brand]['body_type'].unique()
+    car_body = st.selectbox('Body type',sorted(filtered_body))
+    filtered_seats = car_data[car_data['manufacturer'] == brand]['Seats'].unique()
+    seats = st.selectbox('seats',sorted(filtered_seats))
+    # Other inputs
 
-# Dynamically filter model options based on selected brand
-filtered_models = car_data[car_data['manufacturer'] == brand]['model'].unique()
-car_model = st.selectbox('Select Car Model', sorted(filtered_models))
-filtered_body = car_data[car_data['manufacturer'] == brand]['body_type'].unique()
-car_body = st.selectbox('Body type',sorted(filtered_body))
-
-# Other inputs
-fuel = st.selectbox('Fuel Type', (car_data['Fuel_Type'].unique()))
-insurance = st.selectbox('Insurance Validity', (car_data['Insurance Validity'].unique()))
-kms = st.slider('No. of KMs Driven', 10, 200000)
-transmission = st.selectbox('Transmission Type', (car_data['transmission_type'].unique()))
-owner = st.selectbox('No. of Owners', (car_data['owner_No'].unique()))
-year = st.slider('Manufacture Year', 1990, 2024)
-milage = st.slider('Mileage (kmpl)', 5, 30)
-engine = st.slider('Engine (CC)', 700, 1500)
-power = st.slider('Max Power (BHP)', 0, 200)
-torque = st.slider('Torque (Nm)', 100, 3000)
-seats = st.slider('No. of Seats', 4, 10)
+    fuel = st.selectbox('Fuel Type', (car_data['Fuel_Type'].unique()))
+    insurance = st.selectbox('Insurance Validity', (car_data['Insurance Validity'].unique()))
+    transmission = st.selectbox('Transmission Type', (car_data['transmission_type'].unique()))
+    owner = st.selectbox('No. of Owners', (car_data['owner_No'].unique()))
+with c2: 
+    kms = st.slider('No of kms driven', 10 , 200000) 
+    year = st.slider('Manufacture Year', 1990, 2024)
+    milage = st.slider('Mileage (kmpl)', 5, 30)
+    engine = st.slider('Engine (CC)', 700, 1500)
+    power = st.slider('Max Power (BHP)', 0, 200)
+    torque = st.slider('Torque (Nm)', 100, 3000)
+    
 
 # Predict button
 if st.button('Predict'):
